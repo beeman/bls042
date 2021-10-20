@@ -2,18 +2,24 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../utils/trpc';
+import { useEffect } from 'react';
 
 export default function IndexPage() {
   const postsQuery = trpc.useQuery(['post.all']);
   const addPost = trpc.useMutation('post.add');
+  const addUser = trpc.useMutation('user.create');
   const utils = trpc.useContext();
 
+  useEffect(() => {
+    addUser.mutate({ username: 'bee', email: 'beeman@beeman.nl' });
+  }, []);
+
   // prefetch all posts for instant navigation
-  // useEffect(() => {
-  //   postsQuery.data?.forEach((post) => {
-  //     utils.prefetchQuery(['post.byId', post.id]);
-  //   });
-  // }, [postsQuery.data, utils]);
+  useEffect(() => {
+    postsQuery.data?.forEach((post) => {
+      utils.prefetchQuery(['post.byId', { id: post.id }]);
+    });
+  }, [postsQuery.data, utils]);
 
   return (
     <>

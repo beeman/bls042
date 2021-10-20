@@ -20,6 +20,9 @@ export default trpcNext.createNextApiHandler({
       console.error('Something went wrong', error);
     }
   },
+  async teardown() {
+    //
+  },
   /**
    * Enable query batching
    */

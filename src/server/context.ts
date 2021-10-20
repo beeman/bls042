@@ -8,6 +8,9 @@ const prisma = new PrismaClient({
       ? ['query', 'error', 'warn']
       : ['error'],
 });
+
+// Caching
+
 /**
  * Creates context for an incoming request
  * @link https://trpc.io/docs/context
@@ -16,11 +19,17 @@ export const createContext = async ({
   req,
   res,
 }: trpcNext.CreateNextContextOptions) => {
+  // User fill be fetched here
+  // const user = prisma.user.findUnique({ where: { id: req.query.id }})
+
   // for API-response caching see https://trpc.io/docs/caching
   return {
     req,
     res,
     prisma,
+    meta: {
+      env: process.env.NODE_ENV,
+    },
   };
 };
 

@@ -44,6 +44,9 @@ export const postRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { id } = input;
+      console.log(ctx.meta.env);
+      console.log(ctx.req.headers?.authorization);
+
       const post = await ctx.prisma.post.findUnique({
         where: { id },
         select: {

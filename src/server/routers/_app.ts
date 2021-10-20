@@ -4,6 +4,7 @@
 import superjson from 'superjson';
 import { createRouter } from '../createRouter';
 import { postRouter } from './post';
+import { userRouter } from './user';
 
 /**
  * Create your application's root router
@@ -21,7 +22,23 @@ export const appRouter = createRouter()
    * Optionally do custom error (type safe!) formatting
    * @link https://trpc.io/docs/error-formatting
    */
-  // .formatError(({ shape, error }) => { })
-  .merge('post.', postRouter);
+  // .formatError(({ shape, error }) => {
+  //   return {
+  //     ...shape,
+  //     data: {
+  //       ...shape.data,
+  //       zodError:
+  //         error.code === 'BAD_REQUEST' && error.cause instanceof ZodError
+  //           ? error.cause.flatten()
+  //           : null,
+  //     },
+  //   };
+  // })
+  // .formatError(({ shape, error }) => {
+  //   console.log({ shape, error });
+  //   return shape;
+  // })
+  .merge('post.', postRouter)
+  .merge('user.', userRouter);
 
 export type AppRouter = typeof appRouter;

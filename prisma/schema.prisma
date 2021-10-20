@@ -19,4 +19,21 @@ model Post {
   // https://trpc.io/docs/data-transformers
   createdAt DateTime @unique @default(now())
   updatedAt DateTime @unique @default(now())
+
+  owner   User   @relation(name: "Post_belongsTo_User", fields: [ownerId], references: [id])
+  ownerId String
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  email    String @unique
+  password String
+  posts    Post[]   @relation("Post_belongsTo_User")
+
+
+  // To return `Date`s intact through the API we need to add data transformers
+  // https://trpc.io/docs/data-transformers
+  createdAt DateTime @unique @default(now())
+  updatedAt DateTime @unique @default(now())
 }
